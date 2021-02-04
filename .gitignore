@@ -48,3 +48,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+/build/
+/.gradle/
+/kote2.iml
