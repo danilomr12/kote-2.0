@@ -83,6 +83,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
     testCompile "org.grails:views-json-testing-support"
     testCompile "org.hibernate.validator:hibernate-validator:6.0.20.Final"
+    compile files('lib/middleware-1.0.jar')
 }
 
 bootRun {
