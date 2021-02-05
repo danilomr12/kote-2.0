@@ -3,28 +3,24 @@ package br.com.kote
 import org.apache.commons.lang.builder.HashCodeBuilder
 
 class Telefone {
-    static final int CELULAR = 0
-    static final int FAX = 1
-    static final int COMERCIAL = 2
-    static final int RESIDENCIAL = 3
+    static final String CELULAR = "CELULAR"
+    static final String FAX = "FAX"
+    static final String COMERCIAL = "COMERCIAL"
+    static final String RESIDENCIAL = "RESIDENCIAL"
 
-    static final Map tipos = [0: "Celular", 1: "Fax", 2: "Fixo", 3: "Residencial"]
+    static final Set tipos = [CELULAR, FAX, COMERCIAL, RESIDENCIAL]
 
-    int tipo
+    String tipo
     String ddd
     String numero
 
     static mapping = {
-        id generator:'identity'
+        id generator: 'identity'
     }
     static constraints = {
         ddd(nullable: false, blank: false)
         numero(nullable: false, blank: false)
-        tipo(inList:[0,1,2,3])
-    }
-
-    getTipo(int tipo) {
-        return tipos[tipo]
+        tipo(inList: tipos)
     }
 
     int hashCode() {
@@ -50,9 +46,9 @@ class Telefone {
     }
 
     String toString(){
-        if(this.numero == null && this.ddd == null)
+        if (this.numero == null && this.ddd == null && this.tipo == null)
             return ""
-        return "($ddd)${numero}"
+        return "(${this.ddd})${this.numero} : ${this.tipo?.toLowerCase()}"
     }
 
     static Telefone buildFrom(String numero){
@@ -60,5 +56,4 @@ class Telefone {
             return new Telefone(ddd:numero.substring(0,2), numero:numero.substring(3))
         return null
     }
-
 }

@@ -1,4 +1,4 @@
-import br.com.kote.cotacao.CotacaoRascunho
+import br.com.kote.cotacao.estados.CotacaoRascunho
 
 // Place your Spring DSL code here
 beans = {

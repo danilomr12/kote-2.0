@@ -1,6 +1,10 @@
-package br.com.kote.cotacao
+package br.com.kote.cotacao.estados
 
 import br.com.analise.service.ICompraService
+import br.com.kote.cotacao.AnaliseFactory
+import br.com.kote.cotacao.Cotacao
+import br.com.kote.cotacao.EstadoCotacao
+import br.com.kote.cotacao.ICotacao
 import br.com.kote.resposta.RespostaFactory
 import br.com.kote.usuario.Representante
 
@@ -16,8 +20,8 @@ class CotacaoRascunho extends EstadoCotacao {
         try {
             log.debug("Enviando cotação - id: ${cotacao.id}}")
             dataService.refreshSession()
-            cotacao.mudeEstadoPara(PROCESSANDO_ENVIO_RESPOSTAS)
-            compraService.updateEstadoCompraByCotacaoId(cotacao.id, PROCESSANDO_ENVIO_RESPOSTAS)
+            cotacao.mudeEstadoPara(EstadoCotacao.PROCESSANDO_ENVIO_RESPOSTAS)
+            compraService.updateEstadoCompraByCotacaoId(cotacao.id, EstadoCotacao.PROCESSANDO_ENVIO_RESPOSTAS)
             cotacao.save()
             def session = sessionFactory.getCurrentSession()
             session.flush()
@@ -34,7 +38,7 @@ class CotacaoRascunho extends EstadoCotacao {
 
     private void doBackgroungWork(List idRepresentantes, Long idCotacao) {
         backgroundService.execute("Criando Analise e respostas de cotação - id: ${idCotacao}", {
-            //new AnaliseFactory().crie(idCotacao)
+            new AnaliseFactory().crie(idCotacao)
             new RespostaFactory().crie(idRepresentantes, idCotacao)
         })
     }
@@ -51,8 +55,8 @@ class CotacaoRascunho extends EstadoCotacao {
             cotacao.delete()
             return Cotacao.get(idCotacao) == null
         }
-        cotacao.mudeEstadoPara(CANCELADA)
-        compraService.updateEstadoCompraByCotacaoId(cotacao.id, CANCELADA)
+        cotacao.mudeEstadoPara(EstadoCotacao.CANCELADA)
+        compraService.updateEstadoCompraByCotacaoId(cotacao.id, EstadoCotacao.CANCELADA)
         if (cotacao.save())
             return true
         false
