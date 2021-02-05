@@ -81,6 +81,10 @@ class Cotacao implements ICotacao, ITransicaoEstadoCotacao {
         return null
     }
 
+    Set<IResposta> getRespostas() {
+        this.respostas
+    }
+
     AbstractCounter makeRespostasCounter() {
         return estado.makeRespostaCounter(this)
     }

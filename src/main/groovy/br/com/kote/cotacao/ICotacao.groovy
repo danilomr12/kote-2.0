@@ -11,6 +11,8 @@ interface ICotacao {
 
     IResposta addResposta(IResposta resposta)
 
+    Set<IResposta> getRespostas()
+
     AbstractCounter buildPedidosCounter()
 
     AbstractCounter makeRespostasCounter()
