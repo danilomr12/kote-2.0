@@ -49,10 +49,10 @@ class Endereco {
         logradouro nullable: false, blank: false
         estado nullable: false, blank: false, inList: estados.keySet() as List
         cidade nullable: false, blank: false
+        bairro nullable: false, blank: false
         cep nullable: true, blank: true
         numero nullable: true, blank: true
         complemento nullable: true, blank: true
-        bairro nullable: false, blank: false
         empresa nullable: true
     }
 

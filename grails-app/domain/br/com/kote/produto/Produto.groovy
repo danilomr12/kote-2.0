@@ -1,57 +1,36 @@
 package br.com.kote.produto
 
+import grails.rest.Resource
 
-//@Searchable
+@Resource(uri = '/produto', formats = ['json'])
 class Produto {
 
-   // @SearchableId
     Long id
     Integer version
-
-   // @SearchableProperty
     String descricao
-
-   // @SearchableProperty
     String categoria
-
-   // @SearchableProperty
     String barCode
-
-   // @SearchableProperty
     String fabricante
-
-    static transients = ['possuiDataDelecao', 'possuiDataModificacao']
-   // @SearchableProperty
-    boolean possuiDataDelecao
-   // @SearchableProperty
-    boolean possuiDataModificacao
-
-   // @SearchableProperty
     String marca
-
-    static embedded = ['embalagem']
-
-   // @SearchableComponent
     EmbalagemVenda embalagem
-
-   // @SearchableProperty
     Double peso
-
-   // @SearchableProperty
     Integer qtdMaster = 1
-
-  //  @SearchableProperty
     String empresaId
-
     String embalagemMaster
-
     Date dataDelecao
     Date dataModificacao
 
+    static transients = ['possuiDataDelecao', 'possuiDataModificacao']
+    boolean possuiDataDelecao
+    boolean possuiDataModificacao
+
+    static embedded = ['embalagem']
+
     static mapping = {
-        id generator:'identity'
-        descricao index:'descricao_index'
+        id generator: 'identity'
+        descricao index: 'descricao_index'
     }
+
     static constraints = {
         barCode(nullable: true, blank: true)
         descricao(nullable: false, blank: false)
@@ -64,7 +43,7 @@ class Produto {
         embalagemMaster(nullable: true, blank: true)
         dataDelecao(nullable: true)
         dataModificacao(nullable: true)
-        empresaId(blank: false)
+        empresaId(blank: true, nullable: true)
     }
 
     def beforeInsert = {
@@ -122,11 +101,16 @@ class Produto {
         return true
     }
 
-    Integer calculeQuantidadeDaEmbalagem(){
+    Integer calculeQuantidadeDaEmbalagem() {
         this.embalagem.toString().getAt(3..6).toInteger()
     }
 
-    String toString(){
+    String toString() {
         return this.id + " - " + this.barCode + " - " + this.descricao + " - " + this.embalagem.toString()
+    }
+
+    void setEmbalagem(EmbalagemVenda embalagemVenda) {
+        this.embalagem = embalagemVenda
+        embalagemVenda.produto = this
     }
 }

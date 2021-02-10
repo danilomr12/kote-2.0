@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">KOTE</a>
+    <button aria-controls="navbarsExampleDefault" aria-expanded="false"
+            aria-label="Toggle navigation"
+            class="navbar-toggler"
+            data-bs-target="#navbarsExampleDefault"
+            data-bs-toggle="collapse"
+            type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item active">
+          <a aria-current="page" class="nav-link" routerLink="/comp/caixa-de-entrada-comprador">
+            Caixa de entrada
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/comp/fornecedores">Fornecedores</a>
+        </li>
+        <li class="nav-item">
+          <a aria-disabled="true" class="nav-link" routerLink="/comp/catalogo" tabindex="-1">Catalogo</a>
+        </li>
+
+        <li class="nav-item dropdown show" ngbDropdown>
+          <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdown01"
+             ngbDropdownToggle>Username</a>
+          <ul aria-labelledby="dropdown01" class="dropdown-menu" ngbDropdownMenu>
+            <li><a class="dropdown-item" ngbDropdownItem routerLink="/profile">Meus dados</a></li>
+            <li><a class="dropdown-item" href="#" ngbDropdownItem>Another action</a></li>
+            <li><a class="dropdown-item" href="#" ngbDropdownItem>Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input aria-label="Search" class="form-control me-2" placeholder="Search" type="search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>

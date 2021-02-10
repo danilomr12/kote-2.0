@@ -20,7 +20,7 @@ class Telefone {
     static constraints = {
         ddd(nullable: false, blank: false)
         numero(nullable: false, blank: false)
-        tipo(inList: tipos)
+        tipo(inList: tipos as List)
     }
 
     int hashCode() {
