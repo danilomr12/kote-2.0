@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-md-6">
+    <form #f="ngForm" (ngSubmit)="save(f.value)">
+      <div class="form-group">
+        <label for="description">Descricao</label>
+        <input #description='ngModel' [(ngModel)]="product.description" class="form-control" id="description"
+               name="description" required type="text">
+        <div *ngIf="description.touched && description.invalid" class="alert alert-danger">
+          Descrição é obrigatória
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="brand">Marca</label>
+        <input #brand='ngModel' [(ngModel)]="product.brand" class="form-control" id="brand" name="brand" type="text">
+      </div>
+      <div class="form-group">
+        <label for="category">Categoria</label>
+        <select #category='ngModel' [(ngModel)]="product.category" class="form-control" id="category" name="category"
+                required>
+          <option value=""></option>
+          <option *ngFor="let category of categories$ | async"
+                  [value]="category.key">{{category.payload.val().name}}</option>
+          <div *ngIf="category.touched && category.invalid" class="alert alert-danger">
+            A categoria do produto é obrigatória
+          </div>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="weigth">Peso</label>
+        <div class="input-group">
+          <input #weight='ngModel' [(ngModel)]="product.weight" [min]="0" class="form-control" id="weigth" name="weight"
+                 type="number">
+          <div class="input-group-append">
+            <span class="input-group-text">Kg</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type-of-unit-package">Embalagem da unidade</label>
+        <input #unitPkgType='ngModel' [(ngModel)]="product.typeOfUnitPackage" class="form-control"
+               id="type-of-unit-package" name="typeOfUnitPackage"
+               required="" type="text">
+        <div *ngIf="unitPkgType.touched && unitPkgType.invalid" class="alert alert-danger">
+          A descrição da embalagem de venda é obrigatória
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="amout-inside-package">Qtd na embalagem venda</label>
+        <input #amountInsidePkg='ngModel' [(ngModel)]="product.amoutInsidePackage" class="form-control"
+               id="amout-inside-package" min="1"
+               name="amoutInsidePackage" required type="number">
+        <div *ngIf="amountInsidePkg.touched && amountInsidePkg.invalid" class="alert alert-danger">
+          <div *ngIf="amountInsidePkg.errors.required">
+            Quantidade da embalagem do produto é obrigatória.
+          </div>
+          <div *ngIf="amountInsidePkg.errors.min">
+            Quantidade da embalagem do produto deve ser maior que zero.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="selling-package">Embalagem de venda</label>
+        <input #sellPkg='ngModel' [(ngModel)]="product.sellingPackage" class="form-control" id="selling-package"
+               name="sellingPackage"
+               required type="text">
+        <div *ngIf="sellPkg.touched && sellPkg.invalid" class="alert alert-danger">
+          A descrição da embalagem de venda é obrigatória
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="master-amount">Qtd master</label>
+        <input #masterAmount='ngModel' [(ngModel)]="product.masterAmount" class="form-control" id="master-amount"
+               name="masterAmount" type="number">
+      </div>
+      <button class="btn btn-primary">Salvar</button>
+      <button (click)="delete()" class="btn btn-danger" type="button">Deletar</button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{description.value}}</h5>
+        <p class="card-text">{{brand.value}}</p>
+        <p class="card-text">Categoria: {{category.value}}</p>
+        <p class="card-text">Peso: {{weight.value}} Kg</p>
+
+        <div *ngIf="(sellPkg.value && amountInsidePkg.value && unitPkgType.value) else elseBlock">
+          <p class="card-text">Embalagem de
+            venda: {{sellPkg.value + '/' + amountInsidePkg.value + '/' + unitPkgType.value}}</p>
+        </div>
+        <ng-template #elseBlock>
+          <p class="card-text">Embalagem de venda: - - - </p>
+        </ng-template>
+
+        <p class="card-text">Embalagem master: {{masterAmount.value}} unidade{{masterAmount.value > 1 ? 's' : ''}} da
+          embalagem de venda</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+

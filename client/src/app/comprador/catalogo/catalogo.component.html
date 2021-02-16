@@ -1,42 +1,34 @@
-<div class="mat-elevation-z8">
-  <table aria-label="Elements" class="full-width-table" mat-table matSort>
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Id</th>
-      <td *matCellDef="let row" mat-cell>{{row.id}}</td>
-    </ng-container>
-
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
-      <td *matCellDef="let row" mat-cell>{{row.descricao}}</td>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container cdkColumnDef="weight">
-      <th *cdkHeaderCellDef cdk-header-cell> Weight</th>
-      <td *cdkCellDef="let element" cdk-cell> {{element.weight}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="marca">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Marca</th>
-      <td *matCellDef="let row" mat-cell>{{row.marca}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="fabricante">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Fabricante</th>
-      <td *matCellDef="let row" mat-cell>{{row.fabricante}}</td>
-    </ng-container>
-
-    <tr *matHeaderRowDef="['name', 'marca', 'fabricante']" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: ['name', 'marca', 'fabricante'];" mat-row></tr>
-  </table>
-
-  <mat-paginator #paginator
-                 [length]="dataSource?.data.length"
-                 [pageIndex]="0"
-                 [pageSizeOptions]="[25, 50, 100, 250]"
-                 [pageSize]="50">
-  </mat-paginator>
-</div>
+<p>
+  <a class="btn btn-primary" routerLink="/comp/product/new">Novo</a>
+</p>
+<p>
+  <input #query (keyup)="filter(query.value)" class="form-control" placeholder="Buscar" type="text">
+</p>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Descrição</th>
+    <th>Marca</th>
+    <th>Embalagem de venda</th>
+    <th>Peso da embalagem de venda</th>
+    <th>Embalagem Master</th>
+    <th>Editar</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let p of filteredProducts">
+    <td>{{p.description}}</td>
+    <td>{{p.brand}}</td>
+    <td>
+      {{p.sellingPackage + "/" +
+    p.amoutInsidePackage + "/" +
+    p.typeOfUnitPackage}}
+    </td>
+    <td>{{p.weight}}</td>
+    <td>{{p.masterAmount}}</td>
+    <td>
+      <a [routerLink]="['/comp/product/',p.id]">Editar</a>
+    </td>
+  </tr>
+  </tbody>
+</table>

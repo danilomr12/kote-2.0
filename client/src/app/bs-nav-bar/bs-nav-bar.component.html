@@ -24,13 +24,21 @@
           <a aria-disabled="true" class="nav-link" routerLink="/comp/catalogo" tabindex="-1">Catalogo</a>
         </li>
 
-        <li class="nav-item dropdown show" ngbDropdown>
+        <ng-template #anonymousUser>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Login</a>
+          </li>
+        </ng-template>
+
+        <li *ngIf="appUser; else anonymousUser" class="nav-item dropdown show" ngbDropdown>
           <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdown01"
-             ngbDropdownToggle>Username</a>
+             ngbDropdownToggle>{{appUser.name.split(' ')[0]}}</a>
           <ul aria-labelledby="dropdown01" class="dropdown-menu" ngbDropdownMenu>
             <li><a class="dropdown-item" ngbDropdownItem routerLink="/profile">Meus dados</a></li>
-            <li><a class="dropdown-item" href="#" ngbDropdownItem>Another action</a></li>
-            <li><a class="dropdown-item" href="#" ngbDropdownItem>Sair</a></li>
+            <li *ngIf="appUser | isUserAdmin;">
+              <a class="dropdown-item" ngbDropdownItem routerLink="/admin/users">admin users</a>
+            </li>
+            <li><a (click)="logout()" class="dropdown-item" ngbDropdownItem>Sair</a></li>
           </ul>
         </li>
       </ul>

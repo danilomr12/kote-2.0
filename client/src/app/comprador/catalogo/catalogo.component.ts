@@ -1,29 +1,31 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTable} from '@angular/material/table';
-import {CatalogoDataSource, CatalogoItem} from './catalogo-datasource';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CatalogoDataSource} from './catalogo-datasource';
 import {DataService} from '../../services/data.service';
+import {ProductService} from '../../product.service';
+import {Subscription} from 'rxjs';
+import {Product} from '../../models/product';
 
 @Component({
   selector: 'app-catalogo',
   templateUrl: './catalogo.component.html',
   styleUrls: ['./catalogo.component.css']
 })
-export class CatalogoComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<CatalogoItem>;
+export class CatalogoComponent implements OnInit, OnDestroy {
   dataSource: CatalogoDataSource;
+  public products: Product[];
+  public filteredProducts: Product[];
+  subscription: Subscription;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
-
-  constructor(private dataService: DataService) {
+  constructor(
+    private dataService: DataService,
+    private productService: ProductService
+  ) {
+    this.subscription = this.productService.getAll().subscribe(resp => {
+      this.filteredProducts = this.products = resp;
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSource = new CatalogoDataSource();
     this.dataService.getAll().subscribe(response => {
       console.log(response);
@@ -31,10 +33,14 @@ export class CatalogoComponent implements AfterViewInit, OnInit {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+  filter(value: string): void {
+    console.log(value);
+    this.filteredProducts = (value) ?
+      this.products.filter(item => item.description.toLowerCase().includes(value.toLowerCase())) :
+      this.products;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
